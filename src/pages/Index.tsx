@@ -4,16 +4,13 @@ import TrendingBar from "@/components/TrendingBar";
 import FeaturedArticle from "@/components/FeaturedArticle";
 import ArticleCard from "@/components/ArticleCard";
 import LatestHeadlines from "@/components/LatestHeadlines";
-import ArticleModal from "@/components/ArticleModal";
 import Chatbot from "@/components/Chatbot";
 import Footer from "@/components/Footer";
-import { newsArticles, NewsArticle } from "@/data/newsData";
+import { newsArticles } from "@/data/newsData";
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
-  const [chatbotArticle, setChatbotArticle] = useState<NewsArticle | null>(null);
 
   const filteredArticles = useMemo(() => {
     let articles = [...newsArticles];
@@ -60,15 +57,6 @@ const Index = () => {
     setSelectedCategory("All");
   };
 
-  const handleArticleClick = (article: NewsArticle) => {
-    setSelectedArticle(article);
-  };
-
-  const handleAskChatbot = (article: NewsArticle) => {
-    setSelectedArticle(null);
-    setChatbotArticle(article);
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <Header
@@ -93,17 +81,11 @@ const Index = () => {
               <div className="grid lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2">
                   {featuredArticle && (
-                    <FeaturedArticle
-                      article={featuredArticle}
-                      onArticleClick={handleArticleClick}
-                    />
+                    <FeaturedArticle article={featuredArticle} />
                   )}
                 </div>
                 <div className="lg:border-l lg:border-divider lg:pl-8">
-                  <LatestHeadlines
-                    articles={newsArticles}
-                    onArticleClick={handleArticleClick}
-                  />
+                  <LatestHeadlines articles={newsArticles} />
                 </div>
               </div>
             </section>
@@ -116,11 +98,7 @@ const Index = () => {
                 </h2>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                   {gridArticles.map((article) => (
-                    <ArticleCard
-                      key={article.id}
-                      article={article}
-                      onArticleClick={handleArticleClick}
-                    />
+                    <ArticleCard key={article.id} article={article} />
                   ))}
                 </div>
               </section>
@@ -137,7 +115,6 @@ const Index = () => {
                     <ArticleCard
                       key={article.id}
                       article={article}
-                      onArticleClick={handleArticleClick}
                       variant="horizontal"
                     />
                   ))}
@@ -150,18 +127,8 @@ const Index = () => {
 
       <Footer />
 
-      {/* Article Modal */}
-      <ArticleModal
-        article={selectedArticle}
-        onClose={() => setSelectedArticle(null)}
-        onAskChatbot={handleAskChatbot}
-      />
-
-      {/* Chatbot */}
-      <Chatbot
-        initialArticle={chatbotArticle}
-        onClearArticle={() => setChatbotArticle(null)}
-      />
+      {/* Chatbot for global search */}
+      <Chatbot initialArticle={null} onClearArticle={() => {}} />
     </div>
   );
 };
