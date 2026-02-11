@@ -11,6 +11,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import PollSection from "@/components/PollSection";
+import GroupChat from "@/components/GroupChat";
+import LivePodcast from "@/components/LivePodcast";
+import QuizSection from "@/components/QuizSection";
 import { newsArticles, NewsArticle } from "@/data/newsData";
 
 interface Message {
@@ -251,7 +255,7 @@ const ArticlePage = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Button variant="outline" size="sm" className="gap-2">
                   <Share2 className="w-4 h-4" />
                   Share
@@ -260,6 +264,8 @@ const ArticlePage = () => {
                   <Bookmark className="w-4 h-4" />
                   Save
                 </Button>
+                <GroupChat article={article} />
+                <LivePodcast article={article} />
               </div>
             </header>
 
@@ -276,6 +282,15 @@ const ArticlePage = () => {
                 </p>
               ))}
             </div>
+
+            {/* Interactive Features */}
+            <section className="mt-12 pt-8 border-t border-divider">
+              <h2 className="text-xl font-bold mb-6">Engage with this Story</h2>
+              <div className="grid sm:grid-cols-2 gap-6">
+                <PollSection article={article} />
+                <QuizSection article={article} />
+              </div>
+            </section>
 
             {/* Related Articles */}
             {relatedArticles.length > 0 && (
